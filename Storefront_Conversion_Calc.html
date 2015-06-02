@@ -176,8 +176,14 @@ function readSingleFile(evt) {
 
 		    //Prepare to count
 		    console.log("There are " + memberNumbers.length + " members to account for. Here we go.");
+
+		    //Set up variables for conversion counting
 		    var numConverted = 0;
 		    var numPresentedAlternate = 0;
+		    var a_convert = 0;
+		    var b_convert = 0;
+
+		    //Table struct
 		    document.write("<table border='1' cellpadding='5' cellspacing='2'>");
 		    document.write("<tr><td><b>Member Number</b></td><td><b>Alternate?</b></td><td><b>Converted?</b></td></tr>");
 
@@ -194,18 +200,27 @@ function readSingleFile(evt) {
 				} else { document.write("<td>No</td>"); }
 
 				if (converted_ids[memberNumbers[j]] != null) {
-					//Count if the member was presented version B
+					//Member purchased
 					numConverted++;
 					document.write("<td>Yes</td>");
-				} else { document.write("<td>No</td>"); }
 
+					//Mark them as an alternate convert if true
+					if (percentage >= 50) {
+						b_convert++;
+					} else {
+						a_convert++;
+					}
+				} else { document.write("<td>No</td>"); }
 				document.write("</tr>");
 			}
 			document.write("</tr><tr><td><b>Total</b></td><td>" + numPresentedAlternate + "</td><td>" + numConverted + "</td></tr>");
 			document.write("<tr><td><b>Total Members</b></td><td>" + memberNumbers.length + "</td><td>" + Object.keys(converted_ids).length + "</td></tr>");
-			document.write("<tr><td><b>Percentages</b></td>");
+			document.write("<tr><td><b>Percentage Representation</b></td>");
 			document.write("<td>" + Math.floor(numPresentedAlternate / memberNumbers.length * 100) + "%</td>");
 			document.write("<td>" + Math.floor(numConverted / Object.keys(converted_ids).length * 100) + "%</td></tr>");
+			document.write("<tr><td><b>Conversion Efficacy</b></td>");
+			document.write("<td>Main: " + Math.floor(a_convert / numConverted * 100) + "%</td>");
+			document.write("<td>Alternate: " + Math.floor(b_convert / numConverted * 100) + "%</td></tr>");
 		}
 		r.readAsText(f);
 
