@@ -1,0 +1,217 @@
+<input type="file" id="fileinput" />
+<script type="text/javascript" src="https://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js"></script>
+<script type="text/javascript">
+function add(x, y, base) {
+	var z = [];
+	var n = Math.max(x.length, y.length);
+	var carry = 0;
+	var i = 0;
+	while (i < n || carry) {
+		var xi = i < x.length ? x[i] : 0;
+		var yi = i < y.length ? y[i] : 0;
+		var zi = carry + xi + yi;
+		z.push(zi % base);
+		carry = Math.floor(zi / base);
+		i++;
+	}
+	return z;
+}
+
+function multiplyByNumber(num, x, base) {
+	if (num < 0) return null;
+	if (num == 0) return [];
+
+	var result = [];
+	var power = x;
+	while (true) {
+		if (num & 1) {
+			result = add(result, power, base);
+		}
+		num = num >> 1;
+		if (num === 0) break;
+		power = add(power, power, base);
+	}
+
+	return result;
+}
+
+function parseToDigitsArray(str, base) {
+	var digits = str.split('');
+	var ary = [];
+	for (var i = digits.length - 1; i >= 0; i--) {
+		var n = parseInt(digits[i], base);
+		if (isNaN(n)) return null;
+		ary.push(n);
+	}
+	return ary;
+}
+
+function convertBase(str, fromBase, toBase) {
+	var digits = parseToDigitsArray(str, fromBase);
+	if (digits === null) return null;
+
+	var outArray = [];
+	var power = [1];
+	for (var i = 0; i < digits.length; i++) {
+		  // invariant: at this point, fromBase^i = power
+		  if (digits[i]) {
+		  	outArray = add(outArray, multiplyByNumber(digits[i], power, toBase), toBase);
+		  }
+		  power = multiplyByNumber(fromBase, power, toBase);
+		}
+
+		var out = '';
+		for (var i = outArray.length - 1; i >= 0; i--) {
+			out += outArray[i].toString(toBase);
+		}
+		return out;
+	}
+
+function decToHex(decStr) {
+	var hex = convertBase(decStr, 10, 16);
+	return hex ? '0x' + hex : null;
+}
+
+function hexToDec(hexStr) {
+	if (hexStr.substring(0, 2) === '0x') hexStr = hexStr.substring(2);
+	hexStr = hexStr.toLowerCase();
+	return convertBase(hexStr, 16, 10);
+}
+
+function str_or_null(x) {
+	return x === null ? 'null' : x;
+}
+
+// "1.234e+5" -> "12340"
+function expandExponential(x) {
+	var pos = x.indexOf("e");
+	if (pos === -1) pos = x.indexOf("E");
+	if (pos === -1) return x;
+
+	var base = x.substring(0, pos);
+	var pow = parseInt(x.substring(pos + 1), 10);
+	if (pow < 0) return x;  // not supported.
+
+	var dotPos = base.indexOf('.');
+	if (dotPos === -1) dotPos = base.length;
+
+	var ret = base.replace('.', '');
+	while (ret.length < dotPos + pow) ret += '0';
+	return ret;
+}
+
+function boldDifference(correct, actual) {
+	for (var i = 0, j = 0; i < correct.length && j < actual.length; i++, j++) {
+		if (correct[i] !== actual[j]) {
+			break;
+		}
+	}
+	if (j < actual.length) {
+		return actual.substring(0, j) + '<b>' + actual.substring(j) + '</b>';
+	} else {
+		return actual;
+	}
+}
+
+function hashme(input) {
+	if (input) {
+		var aDec = str_or_null(hexToDec(String(CryptoJS.MD5(input))));
+		aDec = String(aDec).slice(-2);
+		return aDec;
+	}
+}
+
+function viewSource() {
+	window.location = 'view-source:' + window.location.href;
+}
+
+function readSingleFile(evt) {
+
+	//Parse file values into array
+	var memberNumbers = [];
+
+	//Retrieve the first (and only!) File from the FileList object
+	var f = evt.target.files[0]; 
+
+	if (f) {
+		var r = new FileReader();
+		r.onload = function(e) { 
+			//Retrieve file content
+			var contents = e.target.result;
+
+			blocks = contents.split('===================');
+			console.log(blocks);
+
+			//Read the first block line by line
+			var lines = blocks[0].split('\n');
+			var memberNumber = "";
+			var count = "";
+
+			//First Block: Offer Sets
+			//Iterate through file and extract member numbers
+			for(var line = 0; line < lines.length; line++){
+				memberNumber = lines[line].trim().substr(2, lines[line].length - 5);
+				count = lines[line+1];
+				line++;
+				console.log(memberNumber + " counted " + count + " times.");
+
+			    //Add the member number to the array count times
+			    for (var i = 0; i < count; i++) {
+			    	memberNumbers.push(memberNumber);
+			    }
+
+			}
+
+		    //Second Block: Conversions
+		    var lines_section_two = blocks[1].split('\n');
+		    var converted_ids = [];
+		    for (k = 0; k < lines_section_two.length; ++k) {
+		    	if (converted_ids[lines_section_two[k]] == null) {
+		    		converted_ids[lines_section_two[k]] = 1;
+		    	} else {
+		    		converted_ids[lines_section_two[k]]++;
+		    	}
+		    }
+		    console.log(converted_ids);
+
+		    //Prepare to count
+		    console.log("There are " + memberNumbers.length + " members to account for. Here we go.");
+		    var numConverted = 0;
+		    var numPresentedAlternate = 0;
+		    document.write("<table border='1' cellpadding='5' cellspacing='2'>");
+		    document.write("<tr><td><b>Member Number</b></td><td><b>Alternate?</b></td><td><b>Converted?</b></td></tr>");
+
+		    for (var j = 0; j < memberNumbers.length; j++) {
+		    	//Calculate split and display A/B appropriately
+		    	var percentage = hashme(memberNumbers[j]);
+		    	document.write("<tr>");
+		    	document.write("<td>" + memberNumbers[j] + "</td>");
+
+		    	if (percentage >= 50) {
+					//Count if the member was presented version B
+					numPresentedAlternate++;
+					document.write("<td>Yes</td>");
+				} else { document.write("<td>No</td>"); }
+
+				if (converted_ids[memberNumbers[j]] != null) {
+					//Count if the member was presented version B
+					numConverted++;
+					document.write("<td>Yes</td>");
+				} else { document.write("<td>No</td>"); }
+
+				document.write("</tr>");
+			}
+			document.write("</tr><tr><td><b>Total</b></td><td>" + numPresentedAlternate + "</td><td>" + numConverted + "</td></tr>");
+			document.write("<tr><td><b>Total Members</b></td><td>" + memberNumbers.length + "</td><td>" + Object.keys(converted_ids).length + "</td></tr>");
+			document.write("<tr><td><b>Percentages</b></td>");
+			document.write("<td>" + Math.floor(numPresentedAlternate / memberNumbers.length * 100) + "%</td>");
+			document.write("<td>" + Math.floor(numConverted / Object.keys(converted_ids).length * 100) + "%</td></tr>");
+		}
+		r.readAsText(f);
+
+	} else { 
+		alert("Failed to load file");
+	}
+}
+document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
+</script>
