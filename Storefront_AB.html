@@ -1,6 +1,4 @@
-<!-- Base offer copy -->
 <div>Get closer to your next points redemption by purchasing Club Carlson points today!</div>
-<!-- A/B Test Logic -->
 <script type="text/javascript">
 var s = document.createElement('script');
 s.src = 'https://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js';
@@ -20,7 +18,7 @@ s.onload = function () {
         }
         return z;
       }
-      function multiplyByNumber(num, x, base) {
+      function mbn(num, x, base) {
         if (num < 0) return null;
         if (num == 0) return [];
 
@@ -37,28 +35,28 @@ s.onload = function () {
 
         return result;
       }
-      function parseToDigitsArray(str, base) {
-        var digits = str.split('');
+      function ptda(str, base) {
+        var dg = str.split('');
         var ary = [];
-        for (var i = digits.length - 1; i >= 0; i--) {
-          var n = parseInt(digits[i], base);
+        for (var i = dg.length - 1; i >= 0; i--) {
+          var n = parseInt(dg[i], base);
           if (isNaN(n)) return null;
           ary.push(n);
         }
         return ary;
       }
-      function convertBase(str, fromBase, toBase) {
-        var digits = parseToDigitsArray(str, fromBase);
-        if (digits === null) return null;
+      function cba(str, fromBase, toBase) {
+        var dg = ptda(str, fromBase);
+        if (dg === null) return null;
 
         var outArray = [];
         var power = [1];
-        for (var i = 0; i < digits.length; i++) {
+        for (var i = 0; i < dg.length; i++) {
           // invariant: at this point, fromBase^i = power
-          if (digits[i]) {
-            outArray = add(outArray, multiplyByNumber(digits[i], power, toBase), toBase);
+          if (dg[i]) {
+            outArray = add(outArray, mbn(dg[i], power, toBase), toBase);
           }
-          power = multiplyByNumber(fromBase, power, toBase);
+          power = mbn(fromBase, power, toBase);
         }
 
         var out = '';
@@ -69,14 +67,14 @@ s.onload = function () {
       }
 
       function decToHex(decStr) {
-        var hex = convertBase(decStr, 10, 16);
+        var hex = cba(decStr, 10, 16);
         return hex ? '0x' + hex : null;
       }
 
       function hexToDec(hexStr) {
         if (hexStr.substring(0, 2) === '0x') hexStr = hexStr.substring(2);
         hexStr = hexStr.toLowerCase();
-        return convertBase(hexStr, 16, 10);
+        return cba(hexStr, 16, 10);
       }
 
       function str_or_null(x) {
@@ -123,8 +121,8 @@ s.onload = function () {
         window.location = 'view-source:' + window.location.href;
       }
       //Compute whether or not the user sees A / B.
-      var percentage = hashme(document.getElementsByClassName('act')['accountForm'].childNodes[1].children[3].innerHTML);
-      if (percentage >= 50) {
+      var perc = hashme(document.getElementsByClassName('act')['accountForm'].childNodes[1].children[3].innerHTML);
+      if (perc >= 50) {
           // Override the Storefront design
           $("[rel='my-order']")[0].parentNode.style.display = "none";
           $("[rel='account-details']")[0].style.display = "none";
@@ -138,7 +136,8 @@ s.onload = function () {
 }
 // Only load for the buy.
 page = window.location.href;
-if (page == null || page == "") { page = window.location; }
+console.log(page);
 flow = page.substring(page.lastIndexOf("/")+1, page.length);
-if (flow == "buy") { document.head.appendChild(s); }
+if (flow == "buy") { document.getElementsByTagName('head')[0].appendChild(s); }
+// document.head.appendChild(s);
 </script>
