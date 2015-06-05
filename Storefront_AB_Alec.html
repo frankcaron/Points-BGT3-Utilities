@@ -80,34 +80,7 @@ s.onload = function () {
       function str_or_null(x) {
         return x === null ? 'null' : x;
       }
-      function expandExponential(x) {
-        var pos = x.indexOf("e");
-        if (pos === -1) pos = x.indexOf("E");
-        if (pos === -1) return x;
 
-        var base = x.substring(0, pos);
-        var pow = parseInt(x.substring(pos + 1), 10);
-        if (pow < 0) return x;  // not supported.
-
-        var dotPos = base.indexOf('.');
-        if (dotPos === -1) dotPos = base.length;
-
-        var ret = base.replace('.', '');
-        while (ret.length < dotPos + pow) ret += '0';
-        return ret;
-      }
-      function boldDifference(correct, actual) {
-        for (var i = 0, j = 0; i < correct.length && j < actual.length; i++, j++) {
-          if (correct[i] !== actual[j]) {
-            break;
-          }
-        }
-        if (j < actual.length) {
-          return actual.substring(0, j) + '<b>' + actual.substring(j) + '</b>';
-        } else {
-          return actual;
-        }
-      }
 
       function hashme(input) {
         if (input) {
@@ -115,10 +88,6 @@ s.onload = function () {
           aDec = String(aDec).slice(-2);
           return aDec;
         }
-      }
-
-      function viewSource() {
-        window.location = 'view-source:' + window.location.href;
       }
       //Compute whether or not the user sees A / B.
       var perc = hashme(document.getElementsByClassName('act')['accountForm'].childNodes[1].children[3].innerHTML);
@@ -128,7 +97,6 @@ s.onload = function () {
           $("[rel='account-details']")[0].style.display = "none";
           $("[rel='buy-form-description']")[0].style.display = "none";
           $("[rel='reminders']")[0].parentNode.style.display = "none";
-          //$("[rel='marketing-description']")[0].parentNode.style.display = "none";
           document.getElementsByClassName('off-member')[0].style.display = "none";
           try {
             document.getElementsByClassName('off-quantities-options-select')[0].setAttribute('onchange', "javascript:$(\"[rel='my-order']\")[0].parentNode.style.display = 'inherit';");
@@ -140,5 +108,4 @@ page = window.location.href;
 console.log(page);
 flow = page.substring(page.lastIndexOf("/")+1, page.length);
 if (flow == "buy") { document.getElementsByTagName('head')[0].appendChild(s); }
-// document.head.appendChild(s);
 </script>
