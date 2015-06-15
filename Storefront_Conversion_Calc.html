@@ -14,7 +14,7 @@ function add(x, y, base) {
 		carry = Math.floor(zi / base);
 		i++;
 	}
-	return z;
+	return z;	
 }
 
 function multiplyByNumber(num, x, base) {
@@ -209,14 +209,14 @@ function readSingleFile(evt) {
 		    	if (percentage >= 50 && !ie) {
 					//Count if the member was presented version B
 					numPresentedAlternate++;
-					document.write("<td>Yes</td>");
+					document.write("<td style='background-color: #00FF00;'>Yes</td>");
 				} else { document.write("<td>No</td>"); }
 
 				if (converted_ids[memberNumbers[j]] != null && converted_ids[memberNumbers[j]] > 0) {
 					//Member purchased
 					numConverted++;
 					converted_ids[memberNumbers[j]]--;
-					document.write("<td>Yes</td>");
+					document.write("<td style='background-color: #00FF00;'>Yes</td>");
 
 					//Mark them as an alternate convert if true
 					if (percentage >= 50) {
