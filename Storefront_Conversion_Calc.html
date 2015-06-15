@@ -245,7 +245,7 @@ function readSingleFile(evt) {
 			document.write("<td colspan=2>" + (Object.keys(converted_ids).length - 1) + " total transactions against " + memberNumbers.length + " total sessions.</td></tr>");	
 			document.write("<tr><td colspan=2><b>Conversion Comparison</b></td><td colspan=2>");
 			document.write(Math.floor(a_convert / (memberNumbers.length - numPresentedAlternate - numIE) * 100) + "% of members converted (" + a_convert + " / " + (memberNumbers.length - numPresentedAlternate - numIE) + ") on the normal design, less the IE8 visitors.<br />");
-			document.write(Math.floor(b_convert / (memberNumbers.length - numPresentedAlternate - numIE) * 100) + "% of members converted (" + b_convert + " / " + (numPresentedAlternate -  - numIE) + ") on the alternate design, less the IE8 visitors.</td></tr>");
+			document.write(Math.floor(b_convert / (memberNumbers.length - numPresentedAlternate - numIE) * 100) + "% of members converted (" + b_convert + " / " + (memberNumbers.length - numPresentedAlternate - numIE) + ") on the alternate design, less the IE8 visitors.</td></tr>");
 			document.write("<tr><td colspan=2><b>Design Efficacy</b></td><td colspan=2>");
 
 			var mainEfficacy = Math.floor(a_convert / numConverted * 100);
