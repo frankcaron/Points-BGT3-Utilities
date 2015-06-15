@@ -199,7 +199,6 @@ function readSingleFile(evt) {
 		    	var percentage = hashme(memberNumbers[j]);
 		    	document.write("<tr>");
 		    	document.write("<td>" + memberNumbers[j] + "</td>");
-		    	document.write("<td>" + memberBrowsers[j] + "</td>");
 
 		    	//Detemrine IE
 		    	ie = false;
@@ -207,6 +206,9 @@ function readSingleFile(evt) {
 		    	if (index > 0) { 
 		    		ie = true; 
 		    		numIE++; 
+		    		document.write("<td style='background-color: #FF0000;'>" + memberBrowsers[j] + "</td>");
+		    	} else {
+		    		document.write("<td>" + memberBrowsers[j] + "</td>");
 		    	}
 
 		    	//Determine if IE
