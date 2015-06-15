@@ -218,7 +218,7 @@ function readSingleFile(evt) {
 					document.write("<td style='background-color: #00FF00;'>Yes</td>");
 				} else { document.write("<td>No</td>"); }
 
-				if (converted_ids[memberNumbers[j]] != null && converted_ids[memberNumbers[j]] > 0) {
+				if (converted_ids[memberNumbers[j]] != null && converted_ids[memberNumbers[j]] > 0 && !ie) {
 					//Member purchased
 					numConverted++;
 					converted_ids[memberNumbers[j]]--;
@@ -238,15 +238,15 @@ function readSingleFile(evt) {
 			document.write("<tr><td colspan=2><b>IE8 representation</b></td>");
 			document.write("<td colspan=2>" + numIE + " (" + Math.floor(numIE / memberNumbers.length * 100)  + "%) visitors came with IE8. These have been ignored for conversion tabulations.</td></tr>");
 			document.write("<tr><td colspan=2><b>Alternate Representation</b></td>");
-			document.write("<td colspan=2>" + Math.floor((numPresentedAlternate / (memberNumbers.length) * 100)) + "% (" + numPresentedAlternate + " / " + (memberNumbers.length) + ") of all visitors saw the alternate</td></tr>");
+			document.write("<td colspan=2>" + Math.floor((numPresentedAlternate / (memberNumbers.length - numIE) * 100)) + "% (" + numPresentedAlternate + " / " + (memberNumbers.length - numIE) + ") of all visitors saw the alternate</td></tr>");
 			document.write("<tr><td colspan=2><b>Conversion Representation</b></td>");
-			document.write("<td colspan=2>" + Math.floor(numConverted / memberNumbers.length * 100) + "% of all visitors converted</td></tr>");
+			document.write("<td colspan=2>" + Math.floor(numConverted / (memberNumbers.length - numIE) * 100) + "% of all visitors converted</td></tr>");
 			document.write("<tr><td colspan=2><b>Transactions</b></td>");
-			document.write("<td colspan=2>" + (Object.keys(converted_ids).length - 1) + " total transactions against " + memberNumbers.length + " total sessions.</td></tr>");	
+			document.write("<td colspan=2>" + (Object.keys(converted_ids).length - 1) + " total transactions against " + (memberNumbers.length - numIE) + " total sessions.</td></tr>");	
 			document.write("<tr><td colspan=2><b>Conversion Comparison</b></td><td colspan=2>");
-			document.write(Math.floor(a_convert / (memberNumbers.length - numPresentedAlternate) * 100) + "% of members converted (" + a_convert + " / " + (memberNumbers.length - numPresentedAlternate) + ") on the normal design.<br />");
+			document.write(Math.floor(a_convert / (memberNumbers.length - numPresentedAlternate - numIE) * 100) + "% of members converted (" + a_convert + " / " + (memberNumbers.length - numIE - numPresentedAlternate) + ") on the normal design.<br />");
 			document.write(Math.floor(b_convert / numPresentedAlternate * 100) + "% of members converted (" + b_convert + " / " + (numPresentedAlternate) + ") on the alternate design, less the IE8 visitors.</td></tr>");
-			document.write("<tr><td colspan=2><b>Design Efficacy</b></td><td colspan=2>");
+			document.write("<tr><td colspan=2><b>Design Efficacy</b></td><tdand  colspan=2>");
 
 			var mainEfficacy = Math.floor(a_convert / numConverted * 100);
 			var altEfficacy = Math.floor(b_convert / numConverted * 100);
