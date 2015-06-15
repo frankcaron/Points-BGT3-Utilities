@@ -129,6 +129,7 @@ function readSingleFile(evt) {
 
 	//Parse file values into array
 	var memberNumbers = [];
+	var memberBrowsers = [];
 
 	//Retrieve the first (and only!) File from the FileList object
 	var f = evt.target.files[0]; 
@@ -145,19 +146,24 @@ function readSingleFile(evt) {
 			//Read the first block line by line
 			var lines = blocks[0].split('\n');
 			var memberNumber = "";
+			var memberBrowser = "";
 			var count = "";
 
 			//First Block: Offer Sets
 			//Iterate through file and extract member numbers
 			for(var line = 0; line < lines.length; line++){
-				memberNumber = lines[line].trim().substr(2, lines[line].length - 5);
+				currentLine = lines[line].trim().replace(/"/g, "")
+				memberNumber = currentLine.substr(1, currentLine.indexOf(",") - 2);
+				memberBrowser = currentLine.substr(currentLine.indexOf(",") + 2, currentLine.length);;
 				count = lines[line+1];
 				line++;
 				console.log(memberNumber + " counted " + count + " times.");
+				console.log(memberBrowser + " counted " + count + " times.");
 
 			    //Add the member number to the array count times
 			    for (var i = 0; i < count; i++) {
 			    	memberNumbers.push(memberNumber);
+			    	memberBrowsers.push(memberBrowser);
 			    }
 
 			}
@@ -185,15 +191,22 @@ function readSingleFile(evt) {
 
 		    //Table struct
 		    document.write("<table border='1' cellpadding='5' cellspacing='2'>");
-		    document.write("<tr><td><b>Member Number</b></td><td><b>Alternate?</b></td><td><b>Converted?</b></td></tr>");
+		    document.write("<tr><td><b>Member ID</b></td><td><b>Browser</b></td><td><b>Alternate?</b></td><td><b>Converted?</b></td></tr>");
 
 		    for (var j = 0; j < memberNumbers.length; j++) {
 		    	//Calculate split and display A/B appropriately
 		    	var percentage = hashme(memberNumbers[j]);
 		    	document.write("<tr>");
 		    	document.write("<td>" + memberNumbers[j] + "</td>");
+		    	document.write("<td>" + memberBrowsers[j] + "</td>");
 
-		    	if (percentage >= 50) {
+		    	//Detemrine IE
+		    	ie = false;
+		    	index = memberBrowsers[j].indexOf("MSIE 8.0");
+		    	if (index > 0) { ie = true; }
+
+		    	//Determine if IE
+		    	if (percentage >= 50 && !ie) {
 					//Count if the member was presented version B
 					numPresentedAlternate++;
 					document.write("<td>Yes</td>");
@@ -213,14 +226,14 @@ function readSingleFile(evt) {
 				} else { document.write("<td>No</td>"); }
 				document.write("</tr>");
 			}
-			document.write("</tr><tr><td><b>Total</b></td><td>" + numPresentedAlternate + "</td><td>" + numConverted + "</td></tr>");
-			document.write("<tr><td><b>Total Members</b></td><td>" + memberNumbers.length + "</td><td>" + Object.keys(converted_ids).length + "</td></tr>");
-			document.write("<tr><td><b>Percentage Representation</b></td>");
+			document.write("</tr></table><table><tr><td colspan=2><b>Total</b></td><td>" + numPresentedAlternate + "</td><td>" + numConverted + "</td></tr>");
+			document.write("<tr><td colspan=2><b>Total Members</b></td><td>" + memberNumbers.length + "</td><td>" + Object.keys(converted_ids).length + "</td></tr>");
+			document.write("<tr><td colspan=2><b>Percentage Representation</b></td>");
 			document.write("<td>" + Math.floor(numPresentedAlternate / memberNumbers.length * 100) + "%</td>");
 			document.write("<td>" + Math.floor(numConverted / Object.keys(converted_ids).length * 100) + "%</td></tr>");
-			document.write("<tr><td><b>Conversion Efficacy</b></td>");
+			document.write("<tr><td colspan=2><b>Conversion Efficacy</b></td>");
 			document.write("<td>Main: " + Math.floor(a_convert / numConverted * 100) + "%</td>");
-			document.write("<td>Alternate: " + Math.floor(b_convert / numConverted * 100) + "%</td></tr>");
+			document.write("<td>Alternate: " + Math.floor(b_convert / numConverted * 100) + "%</td></tr></table>");
 		}
 		r.readAsText(f);
 
