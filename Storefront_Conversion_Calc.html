@@ -229,9 +229,10 @@ function readSingleFile(evt) {
 			}
 			document.write("</tr></table><table><tr><td colspan=2><b>Total</b></td><td>" + numPresentedAlternate + "</td><td>" + numConverted + "</td></tr>");
 			document.write("<tr><td colspan=2><b>Total Members</b></td><td>" + memberNumbers.length + "</td><td>" + Object.keys(converted_ids).length + "</td></tr>");
-			document.write("<tr><td colspan=2><b>Percentage Representation</b></td>");
-			document.write("<td>" + Math.floor(numPresentedAlternate / memberNumbers.length * 100) + "%</td>");
-			document.write("<td>" + Math.floor(numConverted / Object.keys(converted_ids).length * 100) + "%</td></tr>");
+			document.write("<tr><td colspan=2><b>Alternate Representation</b></td>");
+			document.write("<td colspan=2>" + Math.floor(numPresentedAlternate / memberNumbers.length * 100) + "% of all visitors saw the alternate</td>");
+			document.write("<tr><td colspan=2><b>Converted Representation</b></td>");
+			document.write("<td colspan=2>" + Math.floor(numConverted / Object.keys(converted_ids).length * 100) + "% of all visitors converted</td></tr>");
 			document.write("<tr><td colspan=2><b>Conversion Efficacy</b></td>");
 			document.write("<td>Main: " + Math.floor(a_convert / numConverted * 100) + "%</td>");
 			document.write("<td>Alternate: " + Math.floor(b_convert / numConverted * 100) + "%</td></tr></table>");
