@@ -141,7 +141,7 @@ function readSingleFile(evt) {
 			var contents = e.target.result;
 
 			blocks = contents.split('===================');
-			console.log(blocks);
+			//console.log(blocks);
 
 			//Read the first block line by line
 			var lines = blocks[0].split('\n');
@@ -157,8 +157,8 @@ function readSingleFile(evt) {
 				memberBrowser = currentLine.substr(currentLine.indexOf(",") + 2, currentLine.length);;
 				count = lines[line+1];
 				line++;
-				console.log(memberNumber + " counted " + count + " times.");
-				console.log(memberBrowser + " counted " + count + " times.");
+				//console.log(memberNumber + " counted " + count + " times.");
+				//console.log(memberBrowser + " counted " + count + " times.");
 
 			    //Add the member number to the array count times
 			    for (var i = 0; i < count; i++) {
@@ -181,7 +181,7 @@ function readSingleFile(evt) {
 		    console.log(converted_ids);
 
 		    //Prepare to count
-		    console.log("There are " + memberNumbers.length + " members to account for. Here we go.");
+		    //console.log("There are " + memberNumbers.length + " members to account for. Here we go.");
 
 		    //Set up variables for conversion counting
 		    var numConverted = 0;
@@ -212,9 +212,10 @@ function readSingleFile(evt) {
 					document.write("<td>Yes</td>");
 				} else { document.write("<td>No</td>"); }
 
-				if (converted_ids[memberNumbers[j]] != null) {
+				if (converted_ids[memberNumbers[j]] != null && converted_ids[memberNumbers[j]] > 0) {
 					//Member purchased
 					numConverted++;
+					converted_ids[memberNumbers[j]]--;
 					document.write("<td>Yes</td>");
 
 					//Mark them as an alternate convert if true
