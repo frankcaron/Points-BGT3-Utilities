@@ -186,6 +186,7 @@ function readSingleFile(evt) {
 		    //Set up variables for conversion counting
 		    var numConverted = 0;
 		    var numPresentedAlternate = 0;
+		    var numIE = 0;
 		    var a_convert = 0;
 		    var b_convert = 0;
 
@@ -203,7 +204,10 @@ function readSingleFile(evt) {
 		    	//Detemrine IE
 		    	ie = false;
 		    	index = memberBrowsers[j].indexOf("MSIE 8.0");
-		    	if (index > 0) { ie = true; }
+		    	if (index > 0) { 
+		    		ie = true; 
+		    		numIE++; 
+		    	}
 
 		    	//Determine if IE
 		    	if (percentage >= 50 && !ie) {
@@ -229,6 +233,8 @@ function readSingleFile(evt) {
 			}
 			document.write("</tr></table><br /><br />")
 			document.write("<table cellpadding='4'><tr><td colspan=4><b>TOTALS</b></td></tr>");
+			document.write("<tr><td colspan=2><b>IE9 representation</b></td>");
+			document.write("<td colspan=2>" + Math.floor(numIE / memberNumbers.length * 100)  + "% of visitors came with IE8. These have been ignored for conversion tabulations.</td></tr>");
 			document.write("<tr><td colspan=2><b>Alternate Representation</b></td>");
 			document.write("<td colspan=2>" + Math.floor(numPresentedAlternate / memberNumbers.length * 100) + "% of all visitors saw the alternate</td></tr>");
 			document.write("<tr><td colspan=2><b>Conversion Representation</b></td>");
