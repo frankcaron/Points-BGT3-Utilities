@@ -232,7 +232,7 @@ function readSingleFile(evt) {
 			document.write("<tr><td colspan=2><b>Alternate Representation</b></td>");
 			document.write("<td colspan=2>" + Math.floor(numPresentedAlternate / memberNumbers.length * 100) + "% of all visitors saw the alternate</td>");
 			document.write("<tr><td colspan=2><b>Converted Representation</b></td>");
-			document.write("<td colspan=2>" + Math.floor(numConverted / Object.keys(converted_ids).length * 100) + "% of all visitors converted</td></tr>");
+			document.write("<td colspan=2>" + Math.floor(numConverted / Object.keys(converted_ids).length * 100) + "% of all converting visitors saw the alternate</td></tr>");
 			document.write("<tr><td colspan=2><b>Conversion Efficacy</b></td>");
 			document.write("<td>Main: " + Math.floor(a_convert / numConverted * 100) + "%</td>");
 			document.write("<td>Alternate: " + Math.floor(b_convert / numConverted * 100) + "%</td></tr></table>");
