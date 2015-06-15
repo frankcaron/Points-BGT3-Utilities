@@ -130,6 +130,7 @@ function readSingleFile(evt) {
 	//Parse file values into array
 	var memberNumbers = [];
 	var memberBrowsers = [];
+	var converted_ids = [];
 
 	//Retrieve the first (and only!) File from the FileList object
 	var f = evt.target.files[0]; 
@@ -153,7 +154,7 @@ function readSingleFile(evt) {
 			//Iterate through file and extract member numbers
 			for(var line = 0; line < lines.length; line++){
 				currentLine = lines[line].trim().replace(/"/g, "")
-				memberNumber = currentLine.substr(1, currentLine.indexOf(",") - 2);
+				memberNumber = currentLine.substr(1, currentLine.indexOf(",") - 1);
 				memberBrowser = currentLine.substr(currentLine.indexOf(",") + 2, currentLine.length);;
 				count = lines[line+1];
 				line++;
@@ -170,7 +171,6 @@ function readSingleFile(evt) {
 
 		    //Second Block: Conversions
 		    var lines_section_two = blocks[1].split('\n');
-		    var converted_ids = [];
 		    for (k = 0; k < lines_section_two.length; ++k) {
 		    	if (converted_ids[lines_section_two[k]] == null) {
 		    		converted_ids[lines_section_two[k]] = 1;
@@ -181,7 +181,7 @@ function readSingleFile(evt) {
 		    console.log(converted_ids);
 
 		    //Prepare to count
-		    //console.log("There are " + memberNumbers.length + " members to account for. Here we go.");
+		    console.log("There are " + memberNumbers.length + " members to account for and " + converted_ids.length + " unique purchasers. Here we go.");
 
 		    //Set up variables for conversion counting
 		    var numConverted = 0;
