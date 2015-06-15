@@ -242,10 +242,10 @@ function readSingleFile(evt) {
 			document.write("<tr><td colspan=2><b>Conversion Representation</b></td>");
 			document.write("<td colspan=2>" + Math.floor(numConverted / memberNumbers.length * 100) + "% of all visitors converted</td></tr>");
 			document.write("<tr><td colspan=2><b>Transactions</b></td>");
-			document.write("<td colspan=2>" + (Object.keys(converted_ids).length - 1) + " total transactions</td></tr>");	
+			document.write("<td colspan=2>" + (Object.keys(converted_ids).length - 1) + " total transactions against " + memberNumbers.length + " total sessions.</td></tr>");	
 			document.write("<tr><td colspan=2><b>Conversion Efficacy</b></td><td colspan=2>");
-			document.write(Math.floor(a_convert / numConverted * 100) + "% of members converted on the normal design.<br />");
-			document.write(Math.floor(b_convert / numConverted * 100) + "% of members converted on the alternate design.</td></tr></table>");
+			document.write(Math.floor(a_convert / numConverted * 100) + "% of members converted (" + a_convert + " / " + (memberNumbers.length - numPresentedAlternate - numIE) + ") on the normal design, less the IE8 visitors.<br />");
+			document.write(Math.floor(b_convert / numConverted * 100) + "% of members converted (" + b_convert + " / " + (numPresentedAlternate -  - numIE) + ") on the alternate design, less the IE8 visitors.</td></tr></table>");
 		}
 		r.readAsText(f);
 
