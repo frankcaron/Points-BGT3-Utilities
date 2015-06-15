@@ -190,7 +190,7 @@ function readSingleFile(evt) {
 		    var b_convert = 0;
 
 		    //Table struct
-		    document.write("<table border='1' cellpadding='5' cellspacing='2'>");
+		    document.write("<table cellpadding='5' cellspacing='2' border='0'>");
 		    document.write("<tr><td><b>Member ID</b></td><td><b>Browser</b></td><td><b>Alternate?</b></td><td><b>Converted?</b></td></tr>");
 
 		    for (var j = 0; j < memberNumbers.length; j++) {
@@ -227,12 +227,12 @@ function readSingleFile(evt) {
 				} else { document.write("<td>No</td>"); }
 				document.write("</tr>");
 			}
-			document.write("</tr></table><table><tr><td colspan=2><b>Total</b></td><td>" + numPresentedAlternate + "</td><td>" + numConverted + "</td></tr>");
-			document.write("<tr><td colspan=2><b>Total Members</b></td><td>" + memberNumbers.length + "</td><td>" + Object.keys(converted_ids).length + "</td></tr>");
+			document.write("</tr></table><br /><br />")
+			document.write("<table cellpadding='4'><tr><td colspan=4><b>Total</b></td></tr>");
 			document.write("<tr><td colspan=2><b>Alternate Representation</b></td>");
 			document.write("<td colspan=2>" + Math.floor(numPresentedAlternate / memberNumbers.length * 100) + "% of all visitors saw the alternate</td>");
-			document.write("<tr><td colspan=2><b>Converted Representation</b></td>");
-			document.write("<td colspan=2>" + Math.floor(numConverted / Object.keys(converted_ids).length * 100) + "% of all converting visitors saw the alternate</td></tr>");
+			document.write("<tr><td colspan=2><b>Conversion Representation</b></td>");
+			document.write("<td colspan=2>" + Math.floor(numConverted / memberNumbers.length * 100) + "% of all visitors converted</td>");			
 			document.write("<tr><td colspan=2><b>Conversion Efficacy</b></td>");
 			document.write("<td>Main: " + Math.floor(a_convert / numConverted * 100) + "%</td>");
 			document.write("<td>Alternate: " + Math.floor(b_convert / numConverted * 100) + "%</td></tr></table>");
