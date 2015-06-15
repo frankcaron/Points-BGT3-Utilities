@@ -228,14 +228,16 @@ function readSingleFile(evt) {
 				document.write("</tr>");
 			}
 			document.write("</tr></table><br /><br />")
-			document.write("<table cellpadding='4'><tr><td colspan=4><b>Total</b></td></tr>");
+			document.write("<table cellpadding='4'><tr><td colspan=4><b>TOTALS</b></td></tr>");
 			document.write("<tr><td colspan=2><b>Alternate Representation</b></td>");
-			document.write("<td colspan=2>" + Math.floor(numPresentedAlternate / memberNumbers.length * 100) + "% of all visitors saw the alternate</td>");
+			document.write("<td colspan=2>" + Math.floor(numPresentedAlternate / memberNumbers.length * 100) + "% of all visitors saw the alternate</td></tr>");
 			document.write("<tr><td colspan=2><b>Conversion Representation</b></td>");
-			document.write("<td colspan=2>" + Math.floor(numConverted / memberNumbers.length * 100) + "% of all visitors converted</td>");			
-			document.write("<tr><td colspan=2><b>Conversion Efficacy</b></td>");
-			document.write("<td>Main: " + Math.floor(a_convert / numConverted * 100) + "%</td>");
-			document.write("<td>Alternate: " + Math.floor(b_convert / numConverted * 100) + "%</td></tr></table>");
+			document.write("<td colspan=2>" + Math.floor(numConverted / memberNumbers.length * 100) + "% of all visitors converted</td></tr>");
+			document.write("<tr><td colspan=2><b>Transactions</b></td>");
+			document.write("<td colspan=2>" + (Object.keys(converted_ids).length - 1) + " total transactions</td></tr>");	
+			document.write("<tr><td colspan=2><b>Conversion Efficacy</b></td><td colspan=2>");
+			document.write(Math.floor(a_convert / numConverted * 100) + "% of members converted on the normal design.<br />");
+			document.write(Math.floor(b_convert / numConverted * 100) + "% of members converted on the alternate design.</td></tr></table>");
 		}
 		r.readAsText(f);
 
