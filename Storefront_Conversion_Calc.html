@@ -233,33 +233,98 @@ function readSingleFile(evt) {
 				} else { document.write("<td>No</td>"); }
 				document.write("</tr>");
 			}
-			document.write("</tr></table><br /><br />")
-			document.write("<table cellpadding='4'><tr><td colspan=4><b>TOTALS</b></td></tr>");
-			document.write("<tr><td colspan=2><b>IE8 representation</b></td>");
-			document.write("<td colspan=2>" + numIE + " (" + Math.floor(numIE / memberNumbers.length * 100)  + "%) visitors came with IE8. These have been ignored for conversion tabulations.</td></tr>");
-			document.write("<tr><td colspan=2><b>Alternate Representation</b></td>");
-			document.write("<td colspan=2>" + Math.floor((numPresentedAlternate / (memberNumbers.length - numIE) * 100)) + "% (" + numPresentedAlternate + "/" + (memberNumbers.length - numIE) + ") of all visitors saw the alternate</td></tr>");
-			document.write("<tr><td colspan=2><b>Conversion Representation</b></td>");
-			document.write("<td colspan=2>" + Math.floor(numConverted / (memberNumbers.length - numIE) * 100) + "% (" + numConverted + "/" + (memberNumbers.length - numIE) + ") of all visitors converted</td></tr>");
-			document.write("<tr><td colspan=2><b>Transactions</b></td>");
-			document.write("<td colspan=2>" + (Object.keys(converted_ids).length - 1) + " total transactions against " + (memberNumbers.length - numIE) + " total sessions.</td></tr>");	
-			document.write("<tr><td colspan=2><b>Conversion Comparison</b></td><td colspan=2>");
-			document.write(Math.floor(a_convert / (memberNumbers.length - numPresentedAlternate - numIE) * 100) + "% of members converted (" + a_convert + "/" + (memberNumbers.length - numIE - numPresentedAlternate) + ") on the normal design.<br />");
-			document.write(Math.floor(b_convert / numPresentedAlternate * 100) + "% of members converted (" + b_convert + "/" + (numPresentedAlternate) + ") on the alternate design, less the IE8 visitors.</td></tr>");
-			document.write("<tr><td colspan=2><b>Design Efficacy</b></td><td colspan=2>");
+			document.write("</tr></table><br /><br />");
+			document.write("<table cellpadding='4'><tr><td colspan=2><b>TOTALS</b></td></tr>");
 
-			var mainEfficacy = Math.floor(a_convert / numConverted * 100);
-			var altEfficacy = Math.floor(b_convert / numConverted * 100);
+			//Variables
+			var numPresentedMain = memberNumbers.length - numPresentedAlternate;
+			var numVisitorsLessIE = memberNumbers.length - numIE;
+			var numPurchasers = (Object.keys(converted_ids).length - 1);
+
+			//Visitor counts
+
+			document.write("<tr><td>Total # of visitors:</td><td>");
+			document.write(memberNumbers.length);
+			document.write("</td></tr>");
+
+			document.write("<tr><td>Total # of purchasers:</td><td>");
+			document.write(numPurchasers);
+			document.write("</td></tr>");
+
+			//IE Counts
+
+			document.write("<tr><td>IE visitors:</td><td>");
+			document.write(numIE);
+			document.write("</td></tr>");
+
+			document.write("<tr><td>IE % of total traffic:</td><td>");
+			document.write(Math.floor(numIE / memberNumbers.length * 100));
+			document.write("%</td></tr>");
+
+			//Main Design
+
+			document.write("<tr><td>Main design visitors:</td><td>");
+			document.write(numPresentedMain);
+			document.write("</td></tr>");
+
+			document.write("<tr><td>Main design purchasers:</td><td>");
+			document.write(a_convert);
+			document.write("</td></tr>")
+
+			document.write("<tr><td>Main % of total traffic:</td><td>");
+			document.write(Math.floor(numPresentedMain / numVisitorsLessIE * 100));
+			document.write("%</td></tr>");
+
+			//Alternate Design
+
+			document.write("<tr><td>Alternate design visitors:</td><td>");
+			document.write(numPresentedAlternate);
+			document.write("</td></tr>");
+
+
+			document.write("<tr><td>Alternate design purchasers:</td><td>");
+			document.write(b_convert);
+			document.write("</td></tr>");
+
+
+			document.write("<tr><td>Alternate % of total traffic:</td><td>");
+			document.write(Math.floor(numPresentedAlternate / numVisitorsLessIE * 100));
+			document.write("%</td></tr>");			
+
+			//Conversion			
+
+			document.write("<tr><td>Total conversion:</td><td>");
+			document.write(Math.floor(numPurchasers / memberNumbers.length * 100));
+			document.write("%</td></tr>");
+
+			document.write("<tr><td>Total number of eligible converts:</td><td>");
+			document.write(numConverted);
+			document.write("</td></tr>");		
+
+			document.write("<tr><td>Main design conversion:</td><td>");
+			document.write(Math.floor(a_convert / numPresentedMain * 100));
+			document.write("%</td></tr>");
+
+			document.write("<tr><td>Alternate design conversion:</td><td>");
+			document.write(Math.floor(b_convert / numPresentedAlternate * 100));
+			document.write("%</td></tr>");
+
+			//Efficacy
+
+			var mainEfficacy = Math.floor(a_convert / numPresentedMain * 100);
+			var altEfficacy = Math.floor(b_convert / numPresentedAlternate * 100);
 			var winnerEfficacy = "";
 			var winner = "";
+
 			if (mainEfficacy > altEfficacy) {
-				winnerEfficacy = mainEfficacy - altEfficacy;
+				winnerEfficacy = Math.ceil((mainEfficacy / altEfficacy - 1) * 100);
 				winner = "Main";
 			} else {
-				winnerEfficacy = altEfficacy - mainEfficacy;
+				winnerEfficacy = Math.ceil((altEfficacy / mainEfficacy - 1) * 100);
 				winner = "Alternate";
 			}
 
+			document.write("<tr><td>Conversion Efficacy:</td><td>");
 			document.write("The " + winner + " flow is " + winnerEfficacy + "% more effective.");
 			document.write("</td></tr></table>");
 		}

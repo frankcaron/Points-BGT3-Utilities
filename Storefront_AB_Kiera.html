@@ -89,12 +89,12 @@ s.onload = function () {
         }
       }
 
-      //Compute whether or not the user sees A / B.
-      var perc = hashme(document.getElementsByClassName('act')['accountForm'].childNodes[1].children[3].innerHTML);
-      var firstName = document.getElementsByClassName('act')['accountForm'].childNodes[1].children[1].innerHTML;
-      firstName = firstName.substring(0,firstName.indexOf(" "));
-      balance = $("[rel='balance-description']")[0].innerHTML;
-      balance = balance.substring(8, balance.indexOf(" points"));
+      var user = angular.element(document.body).injector().get('pts.dataStore').get('user');
+      console.log(user);
+      var balance = user.balance;
+      var firstName = user.firstName;
+      var perc = hashme(user.memberId);
+
       if (perc >= 50) {
           // Override the Storefront design
           $("[rel='buy-form-description']")[0].style.display = "none";
