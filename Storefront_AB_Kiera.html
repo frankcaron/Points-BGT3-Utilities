@@ -90,7 +90,6 @@ s.onload = function () {
       }
 
       var user = angular.element(document.body).injector().get('pts.dataStore').get('user');
-      console.log(user);
       var balance = user.balance;
       var firstName = user.firstName;
       var perc = hashme(user.memberId);
